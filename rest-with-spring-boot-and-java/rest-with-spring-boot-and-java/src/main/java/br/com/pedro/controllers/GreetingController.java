@@ -14,7 +14,8 @@ public class GreetingController  {
     private final AtomicLong counter = new AtomicLong();
 
     // http://localhost:8080/greeting?name=Pedro
-    @RequestMapping("/greeting")
+    @RequestMapping("/greeting")/*Colocando o @RequestMapping só no método, ele irá servir apenas
+    para o método*/
     public Greeting greeting(
             @RequestParam(value = "name", defaultValue = "World")
             String name){
