@@ -16,13 +16,14 @@ public class MathController {
     public Double sum(@PathVariable("numberOne") String numberOne,
                       @PathVariable("numberTwo") String numberTwo) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new UnsupportedOperationException("Please set a numeric value!");
         }
         return covertToDouble(numberOne) + covertToDouble(numberTwo);
     }
 
     public static Double covertToDouble(String strNumber) {
-        if (strNumber == null) return 0d;
+        if (strNumber == null || strNumber.isEmpty())
+            throw new UnsupportedOperationException("Please set a numeric value!");
         String number = strNumber.replaceAll(",", ".");// Moeda Americana x Brasileira
         return Double.parseDouble(number);
     }
