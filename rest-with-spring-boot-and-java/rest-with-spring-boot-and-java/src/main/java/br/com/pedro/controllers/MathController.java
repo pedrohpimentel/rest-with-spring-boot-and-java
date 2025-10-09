@@ -78,4 +78,16 @@ public class MathController {
 
         return average;
     }
+
+    @RequestMapping(value="/sqrt/{number}", method=RequestMethod.GET)
+    public Double sqrt(@PathVariable("number") String number) throws Exception {
+        if (!isNumeric(number)) {
+            throw new UnsupportedOperationException("Please set a numeric value!");
+        }
+        Double n1 = covertToDouble(number);
+        if (n1 < 0){
+            throw new UnsupportedOperationException("Cannot calculate the square root of a negative number!");
+        }
+        return Math.sqrt(n1) ;
+    }
 }
