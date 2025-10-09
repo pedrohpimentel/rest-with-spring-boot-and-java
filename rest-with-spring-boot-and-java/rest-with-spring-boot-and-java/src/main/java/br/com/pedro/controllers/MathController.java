@@ -67,4 +67,15 @@ public class MathController {
         return covertToDouble(numberOne) / n2;
     }
 
+    @RequestMapping(value="/ave/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+    public Double ava(@PathVariable("numberOne") String numberOne,
+                       @PathVariable("numberTwo") String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException("Please set a numeric value!");
+        }
+
+        Double average = (covertToDouble(numberOne) + covertToDouble(numberTwo)) / 2.0;
+
+        return average;
+    }
 }
