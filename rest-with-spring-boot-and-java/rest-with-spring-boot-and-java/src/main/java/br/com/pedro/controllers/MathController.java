@@ -43,4 +43,12 @@ public class MathController {
         return covertToDouble(numberOne) - covertToDouble(numberTwo);
     }
 
+    @RequestMapping(value="/mult/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+    public Double mult(@PathVariable("numberOne") String numberOne,
+                      @PathVariable("numberTwo") String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException("Please set a numeric value!");
+        }
+        return covertToDouble(numberOne) * covertToDouble(numberTwo);
+    }
 }
