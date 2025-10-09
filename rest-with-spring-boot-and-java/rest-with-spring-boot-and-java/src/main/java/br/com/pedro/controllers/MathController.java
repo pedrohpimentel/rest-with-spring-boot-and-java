@@ -51,4 +51,20 @@ public class MathController {
         }
         return covertToDouble(numberOne) * covertToDouble(numberTwo);
     }
+
+    @RequestMapping(value="/div/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+    public Double div(@PathVariable("numberOne") String numberOne,
+                       @PathVariable("numberTwo") String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException("Please set a numeric value!");
+        }
+
+        Double n2 = covertToDouble(numberTwo);
+        if (n2.equals(0.0)){
+            throw new UnsupportedOperationException("Cannot divide by zero!");
+        }
+
+        return covertToDouble(numberOne) / n2;
+    }
+
 }
