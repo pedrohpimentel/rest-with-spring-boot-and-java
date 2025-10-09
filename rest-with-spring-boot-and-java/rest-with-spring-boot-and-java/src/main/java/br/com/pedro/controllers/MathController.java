@@ -34,4 +34,13 @@ public class MathController {
         return number.matches("[-+]?[0-9]*\\.?[0-9]+");
     }
 
+    @RequestMapping(value="/sub/{numberOne}/{numberTwo}", method=RequestMethod.GET)
+    public Double sub(@PathVariable("numberOne") String numberOne,
+                      @PathVariable("numberTwo") String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+            throw new UnsupportedOperationException("Please set a numeric value!");
+        }
+        return covertToDouble(numberOne) - covertToDouble(numberTwo);
+    }
+
 }
