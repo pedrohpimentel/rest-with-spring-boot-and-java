@@ -8,21 +8,19 @@ import br.com.pedro.exception.ExceptionResponse;
 import br.com.pedro.exception.UnsuportedMathOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 
-@ControllerAdvice //Iremos usar para um tratamento que seria espalhado em todos os controllers,
-// se algum controller der alguma exceção e não tiver o tratamento adequado irá cair no tratamento global que é o Advice.
-@RestController
+@RestControllerAdvice
+// Esta anotação combina as funcionalidades de @ControllerAdvice (manipular exceções) e @ResponseBody (para retornar JSON),
 public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)//Irá tratar todos os erros/exceções genéricas do servidor
-    public final ResponseEntity<ExceptionResponse> handleAllExcpetions(Exception ex, WebRequest request){
+    public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(
                 new Date(),
                 ex.getMessage(),
@@ -32,7 +30,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
     }
 
     @ExceptionHandler(UnsuportedMathOperationException.class)
-    public final ResponseEntity<ExceptionResponse> handleBadRequeestExcpetions(Exception ex, WebRequest request){
+    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request){
         ExceptionResponse response = new ExceptionResponse(
                 new Date(),
                 ex.getMessage(),
@@ -40,5 +38,4 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
 }
