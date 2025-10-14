@@ -1,9 +1,9 @@
 package br.com.pedro.services;
 
+import br.com.pedro.exception.ResourceNotFoundException;
+import br.com.pedro.repository.PersonRepository;
 import br.com.pedro.services.model.Person;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
@@ -12,52 +12,49 @@ import java.util.logging.Logger;
 public class PersonServices {
 
     private final AtomicLong counter = new AtomicLong();
-    private Logger logger = Logger.getLogger(PersonServices.class.getName());//Usado para registrar informações (logs).
+    private static final Logger logger = Logger.getLogger(PersonServices.class.getName());;//Usado para registrar informações (logs).
+
+    private final PersonRepository repository;
+
+    public PersonServices(PersonRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Person> findAll(){
         logger.info("Finding all People!");
-       List <Person> persons = new ArrayList<Person>();
-        for (int i = 0; i < 8; i++) {
-            Person person = mockPerson (i);
-            persons.add(person);
-        }
-        return persons;
+        repository.findAll();
+        return repository.findAll();
     }
 
-    public Person findById(String Id){
+    public Person findById(Long id){
         logger.info("Finding one Person!"); //Registra uma mensagem no log do sistema.
-
-        Person person = new Person();
-        person.setId(counter.incrementAndGet()); //Incrementa o contador e define como o (id) da pessoas.
-        person.setFirstName("Pedro");
-        person.setLastName("Henrique");
-        person.setAddress("Monte Sião - MINAS GERAIS - BRASIL");
-        person.setGender("Male");
-        return person;
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
     }
 
     public Person create(Person person){
         logger.info("Creating one Person!");
-        return person;
+        return repository.save(person);
     }
 
     public Person update(Person person){
         logger.info("Updating one Person!");
-        return person;
+            Person entity = repository.findById(person.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        entity.setFirstName(person.getFirstName());
+        entity.setLastName(person.getLastName());
+        entity.setAddress(person.getAddress());
+        entity.setGender(person.getGender());
+
+        return repository.save(person);
     }
 
-    public void delete(String id){
+    public void delete(Long id){
         logger.info("Deleting one Person!");
-    }
-
-    private Person mockPerson(int i) {
-        Person person = new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("First Name " + i);
-        person.setLastName("Last Name " + i);
-        person.setAddress("Set Adress in Brasil");
-        person.setGender("Male");
-        return person;
+       Person entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+       repository.delete(entity);
     }
 
 
