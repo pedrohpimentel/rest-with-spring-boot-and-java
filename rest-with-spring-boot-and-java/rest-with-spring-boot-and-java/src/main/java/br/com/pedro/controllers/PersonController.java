@@ -1,7 +1,7 @@
 package br.com.pedro.controllers;
 
-import br.com.pedro.PersonServices;
-import br.com.pedro.service.model.Person;
+import br.com.pedro.services.PersonServices;
+import br.com.pedro.services.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

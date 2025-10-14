@@ -1,6 +1,6 @@
-package br.com.pedro;
+package br.com.pedro.services;
 
-import br.com.pedro.service.model.Person;
+import br.com.pedro.services.model.Person;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
